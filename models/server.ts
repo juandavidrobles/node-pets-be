@@ -1,6 +1,7 @@
-import express, { Express } from "express";
+import express, { Express, json } from "express";
 import cors from "cors";
 import petsRoutes from "../routes/pets";
+import { connectDB } from '../database/config';
 
 const PETS_PATH = "/api/pet";
 
@@ -11,12 +12,14 @@ export class Server {
   constructor() {
     this.app = express();
     this.port = Number(process.env.PORT);
+    connectDB();
+    this.middlewares();
     this.routes();
   }
 
   middlewares() {
     this.app.use(cors());
-    this.app.use(express.json());
+    this.app.use(json());
   }
 
   routes() {
